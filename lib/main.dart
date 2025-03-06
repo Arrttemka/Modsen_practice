@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
-import 'pages/game_over_page.dart';
 
 void main() {
   runApp(const PoliceCarGameApp());
@@ -18,7 +17,6 @@ class PoliceCarGameApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const HomePage(),
-        '/game_over': (context) => const GameOverPage(),
       },
     );
   }

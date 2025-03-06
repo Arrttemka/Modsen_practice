@@ -21,6 +21,5 @@ flutter:
   assets:
     - assets/images/logo.png
     - assets/images/background.png
-    - assets/images/game_over.png
 
 
