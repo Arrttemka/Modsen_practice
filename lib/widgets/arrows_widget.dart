@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ArrowsWidget extends StatelessWidget {
-  const ArrowsWidget({Key? key}) : super(key: key);
+  final VoidCallback onLeftTap;
+  final VoidCallback onRightTap;
+
+  const ArrowsWidget({Key? key, required this.onLeftTap, required this.onRightTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +19,7 @@ class ArrowsWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           GestureDetector(
+            onTap: onLeftTap,
             child: Padding(
               padding: EdgeInsets.only(left: screenWidth * 0.05),
               child: Image.asset(
@@ -26,6 +30,7 @@ class ArrowsWidget extends StatelessWidget {
             ),
           ),
           GestureDetector(
+            onTap: onRightTap,
             child: Padding(
               padding: EdgeInsets.only(right: screenWidth * 0.05),
               child: Image.asset(
