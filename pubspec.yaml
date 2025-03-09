@@ -10,7 +10,9 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  get:
+  get: ^4.7.2
+  shared_preferences: ^2.5.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -25,3 +27,5 @@ flutter:
     - assets/images/arrow_right.png
     - assets/images/logo.png
     - assets/images/background.png
+    - assets/images/game_over.png
+

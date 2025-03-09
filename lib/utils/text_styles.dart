@@ -27,4 +27,14 @@ class AppTextStyles {
     letterSpacing: -0.3,
     color: Colors.white,
   );
+
+  static const TextStyle scoreText = TextStyle(
+    fontFamily: 'SF Pro Text',
+    fontWeight: FontWeight.w600,
+    fontSize: 24,
+    height: 28 / 24,
+    letterSpacing: -0.3,
+    color: Colors.black,
+  );
+
 }

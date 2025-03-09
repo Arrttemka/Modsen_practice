@@ -11,6 +11,7 @@ class PoliceCarController extends GetxController with GetTickerProviderStateMixi
   late AnimationController controller;
   late Animation<double> animation;
 
+
   @override
   void onInit() {
     super.onInit();
@@ -69,10 +70,14 @@ class PoliceCarController extends GetxController with GetTickerProviderStateMixi
       }
     }
   }
+
   void onCrash() {
-    print("Столкновение");
     isCrashed.value = true;
     controller.stop();
+
+    Future.delayed(const Duration(milliseconds: 100), () {
+      Get.offNamed('/game_over');
+    });
   }
 
   void resetGame() {

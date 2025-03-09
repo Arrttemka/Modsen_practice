@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../utils/text_styles.dart';
+import 'package:police_car_game/controllers/score_controller.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -7,6 +9,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final scoreController = Get.find<ScoreController>();
 
     return Scaffold(
       body: SizedBox.expand(
@@ -41,9 +44,12 @@ class HomePage extends StatelessWidget {
                         height: size.height * 0.08,
                         decoration: const BoxDecoration(color: Colors.red),
                         alignment: Alignment.center,
-                        child: const Text(
-                          '33',
-                          style: AppTextStyles.scoreNumber,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Obx(() => Text(
+                            '${scoreController.highScore.value}',
+                            style: AppTextStyles.scoreNumber,
+                          )),
                         ),
                       ),
                       SizedBox(height: size.height * 0.02),
@@ -66,7 +72,8 @@ class HomePage extends StatelessWidget {
                   height: size.height * 0.074,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/race');
+                      scoreController.resetScore();
+                      Navigator.pushReplacementNamed(context, '/race');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
