@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
+  get:
 
 dev_dependencies:
   flutter_test:
@@ -18,3 +19,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/my_car.png
+    - assets/images/police_car.png
+    - assets/images/arrow_left.png
+    - assets/images/arrow_right.png
