@@ -6,6 +6,7 @@ class PoliceCarController extends GetxController with GetTickerProviderStateMixi
   final int totalLanes = 3;
   var policeCars = <Map<String, dynamic>>[].obs;
   final Random _random = Random();
+  var isCrashed = false.obs;
 
   late AnimationController controller;
   late Animation<double> animation;
@@ -20,53 +21,64 @@ class PoliceCarController extends GetxController with GetTickerProviderStateMixi
 
     animation = Tween<double>(begin: 1, end: 0).animate(controller)
       ..addListener(() {
-        updatePositions();
+        if (!isCrashed.value) {
+          updatePositions();
+        }
       });
   }
 
   void spawnPoliceCar() {
+    if (isCrashed.value) return;
+
     List<double> availableLanes = [0.15, 0.4, 0.65];
-    List<double> chosenLanes = [];
+    double lane = availableLanes[_random.nextInt(availableLanes.length)];
+    double top = -0.6;
 
-    while (chosenLanes.length < 2) {
-      double lane = availableLanes[_random.nextInt(availableLanes.length)];
-      if (!chosenLanes.contains(lane)) {
-        chosenLanes.add(lane);
-      }
-    }
-
-    double baseTop = -0.6;
-    double largeGap = 0.5;
-
-    bool canSpawnFirst = !policeCars.any(
-            (car) => (car['lane'] == chosenLanes[0] && (car['top'] - baseTop).abs() < largeGap));
-
-    bool canSpawnSecond = !policeCars.any(
-            (car) => (car['lane'] == chosenLanes[1] && (car['top'] - (baseTop - largeGap)).abs() < largeGap));
-
-    if (canSpawnFirst) {
+    if (!policeCars.any((car) => car['lane'] == lane && (car['top'] - top).abs() < 0.5)) {
       policeCars.add({
-        'lane': chosenLanes[0],
-        'top': baseTop,
-      });
-    }
-
-    if (canSpawnSecond) {
-      policeCars.add({
-        'lane': chosenLanes[1],
-        'top': baseTop - largeGap,
+        'lane': lane,
+        'top': top,
       });
     }
   }
 
   void updatePositions() {
-    double step = 0.005;
+    if (isCrashed.value) return;
 
+    double step = 0.005;
     for (var car in policeCars) {
       car['top'] += step;
     }
 
     policeCars.removeWhere((car) => car['top'] > 1.2);
+  }
+
+  void checkCollisions(int playerLane, double playerTop) {
+    double playerHeight = 0.1;
+    List<double> availableLanes = [0.15, 0.4, 0.65];
+    double playerLanePosition = availableLanes[playerLane];
+
+    for (var car in policeCars) {
+      if (car['lane'] == playerLanePosition) {
+        double carTop = car['top'];
+        double carHeight = 0.1;
+        if (carTop + carHeight > playerTop && carTop < playerTop + playerHeight) {
+          onCrash();
+          break;
+        }
+      }
+    }
+  }
+  void onCrash() {
+    print("Столкновение");
+    isCrashed.value = true;
+    controller.stop();
+  }
+
+  void resetGame() {
+    isCrashed.value = false;
+    policeCars.clear();
+    controller.repeat();
   }
 
   @override
