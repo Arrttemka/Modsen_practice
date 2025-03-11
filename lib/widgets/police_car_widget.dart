@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:police_car_game/controllers/police_car_controller.dart';
+import '../domain/entities/police_car.dart';
 
 class PoliceCarWidget extends StatelessWidget {
-  const PoliceCarWidget({Key? key}) : super(key: key);
+  final List<PoliceCar> policeCars;
+
+  const PoliceCarWidget({Key? key, required this.policeCars}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final PoliceCarController policeCarController = Get.find<PoliceCarController>();
 
-    return Obx(() => Stack(
-      children: policeCarController.policeCars.map((car) {
+    return Stack(
+      children: policeCars.map((car) {
         return Positioned(
-          top: screenHeight * car['top'],
-          left: screenWidth * car['lane'],
+          top: screenHeight * car.top,
+          left: screenWidth * car.lane,
           child: Image.asset(
             'assets/images/police_car.png',
             width: screenWidth * 0.2,
@@ -23,6 +23,6 @@ class PoliceCarWidget extends StatelessWidget {
           ),
         );
       }).toList(),
-    ));
+    );
   }
 }

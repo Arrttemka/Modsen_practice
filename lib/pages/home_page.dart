@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../utils/text_styles.dart';
-import 'package:police_car_game/controllers/score_controller.dart';
+import '../../cubit/score_cubit.dart';
+import '../../cubit/score_state.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -9,7 +10,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final scoreController = Get.find<ScoreController>();
 
     return Scaffold(
       body: SizedBox.expand(
@@ -46,10 +46,14 @@ class HomePage extends StatelessWidget {
                         alignment: Alignment.center,
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
-                          child: Obx(() => Text(
-                            '${scoreController.highScore.value}',
-                            style: AppTextStyles.scoreNumber,
-                          )),
+                          child: BlocBuilder<ScoreCubit, ScoreState>(
+                            builder: (context, state) {
+                              return Text(
+                                '${state.highScore}',
+                                style: AppTextStyles.scoreNumber,
+                              );
+                            },
+                          ),
                         ),
                       ),
                       SizedBox(height: size.height * 0.02),
@@ -72,7 +76,7 @@ class HomePage extends StatelessWidget {
                   height: size.height * 0.074,
                   child: ElevatedButton(
                     onPressed: () {
-                      scoreController.resetScore();
+                      context.read<ScoreCubit>().resetScore();
                       Navigator.pushReplacementNamed(context, '/race');
                     },
                     style: ElevatedButton.styleFrom(

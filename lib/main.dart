@@ -1,32 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'cubit/car_cubit.dart';
+import 'cubit/police_car_cubit.dart';
+import 'cubit/score_cubit.dart';
 import 'pages/home_page.dart';
 import 'pages/race_page.dart';
 import 'pages/game_over_page.dart';
-import 'package:police_car_game/controllers/score_controller.dart';
 
-void main() {
+void main()  {
   WidgetsFlutterBinding.ensureInitialized();
-  Get.put(ScoreController());
 
-  runApp(const PoliceCarGameApp());
+  runApp(const MyApp());
 }
 
-class PoliceCarGameApp extends StatelessWidget {
-  const PoliceCarGameApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Police Car Game',
-      theme: ThemeData.dark(),
-      initialRoute: '/',
-      getPages: [
-        GetPage(name: '/', page: () => const HomePage()),
-        GetPage(name: '/race', page: () => const RacePage()),
-        GetPage(name: '/game_over', page: () => const GameOverPage()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<CarCubit>(create: (_) => CarCubit()),
+        BlocProvider<PoliceCarCubit>(create: (_) => PoliceCarCubit()),
+        BlocProvider<ScoreCubit>(create: (_) => ScoreCubit()),
       ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Police Car Game',
+        initialRoute: '/homepage',
+        routes: {
+          '/homepage': (context) => const HomePage(),
+          '/race': (context) => const RacePage(),
+          '/game_over': (context) => const GameOverPage(),
+        },
+      ),
     );
   }
 }
